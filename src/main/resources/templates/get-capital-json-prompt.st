@@ -1,0 +1,1 @@
+What is the capital of {stateOrCountry}? Response in JSON format without markdown tags with the following keys: name, population, region, language, currency.

@@ -26,6 +26,9 @@ public class OpenAIServiceImpl implements AIService {
   @Value("classpath:templates/get-capital-with-info-prompt.st")
   Resource getCapitalInfoPrompt;
 
+  @Value("classpath:templates/get-capital-json-prompt.st")
+  Resource getCapitalInfoJSONPrompt;
+
   private final ChatModel chatModel;
 
   public OpenAIServiceImpl(ChatModel chatModel) {
@@ -103,6 +106,19 @@ public class OpenAIServiceImpl implements AIService {
     PromptTemplate promptTemplate = new PromptTemplate(getCapitalInfoPrompt);
     Prompt prompt = promptTemplate.create(Map.of("stateOrCountry", capitalRequest.stateOrCountry()));
 
+    return chatWithCustomPromtTemplate(prompt);
+  }
+
+  /**
+   * Use ChatModel to call OpenAI API to return JSON response and get the capital of a state or country with additional information.
+   *
+   * @param capitalRequest CapitalRequest object containing state or country
+   * @return Answer object containing response
+   */
+  @Override
+  public Answer getCapitalWithInfoJSON(CapitalRequest capitalRequest) {
+    PromptTemplate promptTemplate = new PromptTemplate(getCapitalInfoJSONPrompt);
+    Prompt prompt = promptTemplate.create(Map.of("stateOrCountry", capitalRequest.stateOrCountry()));
     return chatWithCustomPromtTemplate(prompt);
   }
 

@@ -48,4 +48,12 @@ public interface AIService {
    * @return Answer object containing response
    */
   Answer getCapitalWithInfo(CapitalRequest capitalRequest);
+
+  /**
+   * Use ChatModel to call OpenAI API to return JSON response and get the capital of a state or country with additional information.
+   *
+   * @param capitalRequest CapitalRequest object containing state or country
+   * @return Answer object containing response
+   */
+  Answer getCapitalWithInfoJSON(CapitalRequest capitalRequest);
 }

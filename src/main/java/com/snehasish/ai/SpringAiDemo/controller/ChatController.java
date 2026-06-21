@@ -35,6 +35,11 @@ public class ChatController {
     return aiService.getCapitalWithInfo(capitalRequest);
   }
 
+  @PostMapping("capital-with-info-json")
+  public Answer getCapitalWithInfoJSON(@RequestBody CapitalRequest capitalRequest) {
+    return aiService.getCapitalWithInfoJSON(capitalRequest);
+  }
+
   @GetMapping("chat-options")
   public String getChatWithOptions(@RequestParam String prompt) {
     return aiService.chatWithOptions(prompt);
