@@ -1,25 +1,31 @@
 package com.snehasish.ai.SpringAiDemo.controller;
 
-import com.snehasish.ai.SpringAiDemo.service.ChatService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.snehasish.ai.SpringAiDemo.model.Answer;
+import com.snehasish.ai.SpringAiDemo.model.Question;
+import com.snehasish.ai.SpringAiDemo.service.AIService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ChatController {
-    private final ChatService chatService;
 
-    public ChatController(ChatService chatService) {
-        this.chatService = chatService;
-    }
+  private final AIService aiService;
 
-    @GetMapping("chat")
-    public String chat(@RequestParam String prompt) {
-        return chatService.chat(prompt);
-    }
+  public ChatController(AIService aiService) {
+    this.aiService = aiService;
+  }
 
-    @GetMapping("chat-options")
-    public String chatWithOptions(@RequestParam String prompt) {
-        return chatService.chatWithOptions(prompt);
-    }
+  @GetMapping("chat")
+  public String getChat(@RequestParam String prompt) {
+    return aiService.chat(prompt);
+  }
+
+  @PostMapping("chat")
+  public Answer postChat(@RequestBody Question question) {
+    return aiService.chatWithPromtTemplate(question);
+  }
+
+  @GetMapping("chat-options")
+  public String getChatWithOptions(@RequestParam String prompt) {
+    return aiService.chatWithOptions(prompt);
+  }
 }
