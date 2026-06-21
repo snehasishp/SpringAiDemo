@@ -1,6 +1,7 @@
 package com.snehasish.ai.SpringAiDemo.controller;
 
 import com.snehasish.ai.SpringAiDemo.model.Answer;
+import com.snehasish.ai.SpringAiDemo.model.CapitalRequest;
 import com.snehasish.ai.SpringAiDemo.model.Question;
 import com.snehasish.ai.SpringAiDemo.service.AIService;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,16 @@ public class ChatController {
   @PostMapping("chat")
   public Answer postChat(@RequestBody Question question) {
     return aiService.chatWithPromtTemplate(question);
+  }
+
+  @PostMapping("capital")
+  public Answer getCapital(@RequestBody CapitalRequest capitalRequest) {
+    return aiService.getCapital(capitalRequest);
+  }
+
+  @PostMapping("capital-with-info")
+  public Answer getCapitalWithInfo(@RequestBody CapitalRequest capitalRequest) {
+    return aiService.getCapitalWithInfo(capitalRequest);
   }
 
   @GetMapping("chat-options")
