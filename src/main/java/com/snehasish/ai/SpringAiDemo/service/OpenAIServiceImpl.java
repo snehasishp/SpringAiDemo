@@ -2,17 +2,20 @@ package com.snehasish.ai.SpringAiDemo.service;
 
 import com.snehasish.ai.SpringAiDemo.model.Answer;
 import com.snehasish.ai.SpringAiDemo.model.CapitalRequest;
+import com.snehasish.ai.SpringAiDemo.model.CapitalResponse;
 import com.snehasish.ai.SpringAiDemo.model.Question;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Implementation of AIService using OpenAI Chat API.
@@ -28,6 +31,9 @@ public class OpenAIServiceImpl implements AIService {
 
   @Value("classpath:templates/get-capital-json-prompt.st")
   Resource getCapitalInfoJSONPrompt;
+
+  @Value("classpath:templates/get-capital-json-format-prompt.st")
+  Resource getCapitalJSONFormatPrompt;
 
   private final ChatModel chatModel;
 
@@ -120,6 +126,24 @@ public class OpenAIServiceImpl implements AIService {
     PromptTemplate promptTemplate = new PromptTemplate(getCapitalInfoJSONPrompt);
     Prompt prompt = promptTemplate.create(Map.of("stateOrCountry", capitalRequest.stateOrCountry()));
     return chatWithCustomPromtTemplate(prompt);
+  }
+
+  /**
+   * Use ChatModel to call OpenAI API to return JSON response and get the capital of a state or country with additional information.
+   *
+   * @param capitalRequest CapitalRequest object containing state or country
+   * @return CapitalResponse object containing response
+   */
+  @Override
+  public CapitalResponse getCapitalJSONSchema(CapitalRequest capitalRequest) {
+    BeanOutputConverter<CapitalResponse> beanOutputConverter = new BeanOutputConverter<>(CapitalResponse.class);
+    String format = beanOutputConverter.getFormat();
+
+    PromptTemplate promptTemplate = new PromptTemplate(getCapitalJSONFormatPrompt);
+    Prompt prompt = promptTemplate.create(Map.of("stateOrCountry", capitalRequest.stateOrCountry(),
+        "format", format));
+    ChatResponse response = chatModel.call(prompt);
+    return beanOutputConverter.convert(Objects.requireNonNull(response.getResult().getOutput().getText()));
   }
 
   private Answer chatWithCustomPromtTemplate(Prompt prompt) {

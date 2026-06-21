@@ -2,6 +2,7 @@ package com.snehasish.ai.SpringAiDemo.controller;
 
 import com.snehasish.ai.SpringAiDemo.model.Answer;
 import com.snehasish.ai.SpringAiDemo.model.CapitalRequest;
+import com.snehasish.ai.SpringAiDemo.model.CapitalResponse;
 import com.snehasish.ai.SpringAiDemo.model.Question;
 import com.snehasish.ai.SpringAiDemo.service.AIService;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +39,11 @@ public class ChatController {
   @PostMapping("capital-with-info-json")
   public Answer getCapitalWithInfoJSON(@RequestBody CapitalRequest capitalRequest) {
     return aiService.getCapitalWithInfoJSON(capitalRequest);
+  }
+
+  @PostMapping("capital-json-schema")
+  public CapitalResponse getCapitalJSONSchema(@RequestBody CapitalRequest capitalRequest) {
+    return aiService.getCapitalJSONSchema(capitalRequest);
   }
 
   @GetMapping("chat-options")

@@ -2,6 +2,7 @@ package com.snehasish.ai.SpringAiDemo.service;
 
 import com.snehasish.ai.SpringAiDemo.model.Answer;
 import com.snehasish.ai.SpringAiDemo.model.CapitalRequest;
+import com.snehasish.ai.SpringAiDemo.model.CapitalResponse;
 import com.snehasish.ai.SpringAiDemo.model.Question;
 
 /**
@@ -56,4 +57,12 @@ public interface AIService {
    * @return Answer object containing response
    */
   Answer getCapitalWithInfoJSON(CapitalRequest capitalRequest);
+
+  /**
+   * Use ChatModel to call OpenAI API to return JSON response and get the capital of a state or country with additional information.
+   *
+   * @param capitalRequest CapitalRequest object containing state or country
+   * @return CapitalResponse object containing response
+   */
+  CapitalResponse getCapitalJSONSchema(CapitalRequest capitalRequest);
 }
